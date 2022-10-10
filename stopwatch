@@ -4,13 +4,13 @@ trap finally INT
 elapsed=0
 
 to_string() {
-    t=$1
-    days=$((t / 86400))
-    hours=$(printf %02d $(((t % 86400) / 3600)))
-    minutes=$(printf %02d $(((t % 3600) / 60)))
-    seconds=$(printf %02d $((t % 60)))
+    t="$1"
+    days="$((t / 86400))"
+    hours="$(printf '%02d' "$(((t % 86400) / 3600))")"
+    minutes="$(printf '%02d' "$(((t % 3600) / 60))")"
+    seconds="$(printf '%02d' "$((t % 60))")"
 
-    if [ $days -ne 0 ]; then
+    if [ "$days" -ne 0 ]; then
         printf '%sd %s:%s:%s\r' "$days" "$hours" "$minutes" "$seconds"
     else
         printf '%s:%s:%s\r' "$hours" "$minutes" "$seconds"
@@ -18,17 +18,17 @@ to_string() {
 }
 
 main() {
-    start_time=$(date +%s)
+    start_time="$(date '+%s')"
 
     while :; do
-        elapsed=$(($(date +%s) - start_time))
-        printf '%s' "$(to_string ${elapsed})"
+        elapsed="$(($(date '+%s') - start_time))"
+        printf '%s' "$(to_string "$elapsed")"
         sleep 1
     done
 }
 
 finally() {
-    printf '\r%s\n' "$(to_string ${elapsed})"
+    printf '\r%s\n' "$(to_string "$elapsed")"
     exit 0
 }
 
